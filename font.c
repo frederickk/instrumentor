@@ -28,7 +28,7 @@ designed by Johan Kotlinski
 
 */
 
-#include <gb/font.h>
+#include "font.h"
 
 /* Start of tile array. */
 unsigned char TileLabel[] =

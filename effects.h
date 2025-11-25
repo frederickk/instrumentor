@@ -37,58 +37,57 @@ THE SOFTWARE. }}} */
    */
 
 void handle_effect(BYTE ch) {
-	switch(step_effect[stepcounter]) {
-		case 0: //empty
-			break;
-		case 1: //mute
-	    		NR51_REG = NR51_REG & (0xeeU << ch);
-	}
+  switch(step_effect[stepcounter]) {
+    case 0: //empty
+      break;
+    case 1: //mute
+      NR51_REG = NR51_REG & (0xeeU << ch);
+  }
 }
 
 BYTE vibrato_delay[4],vibrato_rate[4],vibrato_depth[4],
-             vibrato_current_mod[4],vibrato_type[4],vibrato_direction[4];
+     vibrato_current_mod[4],vibrato_type[4],vibrato_direction[4];
 
 void vibrate(BYTE ch) {
-  WORD new_pitch;
-  BYTE mod;
+  WORD new_pitch = 0;
+  BYTE mod = 0;
 
   vibrato_current_mod[ch]+=vibrato_rate[ch];
-	while(vibrato_current_mod[ch]>vibrato_depth[ch]) {
-  	vibrato_current_mod[ch]-=vibrato_depth[ch];
+  while(vibrato_current_mod[ch]>vibrato_depth[ch]) {
+    vibrato_current_mod[ch]-=vibrato_depth[ch];
   }
 
   switch(vibrato_type[ch]) {
-		case 0: //sawtooth
-  		mod = vibrato_current_mod[ch];
-  		break;
+    case 0: //sawtooth
+      mod = vibrato_current_mod[ch];
+      break;
     case 1: //triangle
       if(vibrato_current_mod[ch]<=(vibrato_depth[ch]/2)) {
-				mod = vibrato_current_mod[ch];
-				mod += vibrato_current_mod[ch];
-			} else {
-				mod = vibrato_depth[ch];
-				mod -= vibrato_current_mod[ch];
-				mod += mod;
-			}
-  		break;
+        mod = vibrato_current_mod[ch];
+        mod += vibrato_current_mod[ch];
+      } else {
+        mod = vibrato_depth[ch];
+        mod -= vibrato_current_mod[ch];
+        mod += mod;
+      }
+      break;
     case 2: //square
-			if(vibrato_current_mod[ch]<vibrato_depth[ch]/2) {
-    		mod = 0;
-		  } else {
-				mod = vibrato_depth[ch];
-			}
-  		break;
-
+      if(vibrato_current_mod[ch]<vibrato_depth[ch]/2) {
+        mod = 0;
+      } else {
+        mod = vibrato_depth[ch];
+      }
+      break;
   }
 
   switch(vibrato_direction[ch]) {
-		case 0:
-  		new_pitch = pitch[ch] - mod;
-  		break;
-		case 1:
-  		new_pitch = pitch[ch] + mod;
-  		break;
-	}
+    case 0:
+      new_pitch = pitch[ch] - mod;
+      break;
+    case 1:
+      new_pitch = pitch[ch] + mod;
+      break;
+  }
 
   NR13_REG = new_pitch;
   NR14_REG = new_pitch >> 8;

@@ -1,0 +1,13 @@
+# Build files
+/dist
+/build
+
+# misc
+.DS_Store
+*.pem
+settings.json
+.vscode
+
+# local env files
+.env.*
+

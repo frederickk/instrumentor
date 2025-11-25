@@ -20,39 +20,45 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. }}} */
 
-#include <drawing.h>
-#include <console.h>
+#include <gb/drawing.h>
+#include <gbdk/console.h>
 
 #ifndef _UI_H
 #define _UI_H
 
-void print_menu() {
-	UBYTE j;
-	for(j=0;j<8;j++) {
-    		gotoxy(2,2+j);
-		if(edit_step==j) {
-    			printf(">");
-    		} else {
-			printf(" ");    			
-    		}
-    		if(stepcounter==j) {
-    			printf("*");
-    		} else {
-			printf(" ");    			
-    		}
-    		if(step_note[j]==13) {
-    			printf("---");
-    		} else {
-        		printf("%s%d",NOTES[step_note[j]],step_oct[j]);
-        	}
-        	switch(step_effect[j]) {
-        		case 0:
-        			printf(" 000");
-        			break;
-        		case 1:
-        			printf(" M%2x",step_effect_value[j]);
-        	}
-  	}
+void print_menu(void) {
+  UBYTE j;
+
+  for(j=0;j<8;j++) {
+    gotoxy(2,2+j);
+
+    if(edit_step==j) {
+      printf(">");
+    } else {
+      printf(" ");
+    }
+
+    if(stepcounter==j) {
+      printf("*");
+    } else {
+      printf(" ");
+    }
+
+    if(step_note[j]==13) {
+      printf("---");
+    } else {
+      printf("%s%d",NOTES[step_note[j]],step_oct[j]);
+    }
+
+    switch(step_effect[j]) {
+      case 0:
+        printf(" 000");
+        break;
+      case 1:
+        printf(" M%2x",step_effect_value[j]);
+        break;
+    }
+  }
 }
 
 #endif
